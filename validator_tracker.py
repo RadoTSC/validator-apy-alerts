@@ -9,7 +9,7 @@ def get_validators_for_subnet(netuid):
     """
     
     # TaoStats API endpoint
-    url = f"https://api.taostats.io/api/dtao/validator/yield/latest/v1?netuid={netuid}"
+    url = f"https://api.taostats.io/v1/validators/yield?netuid={netuid}&limit=200"
     
     headers = {
         "accept": "application/json",
@@ -57,7 +57,7 @@ if __name__ == "__main__":
         for i, val in enumerate(validators[:3], 1):
             name = val.get("name") or "Unknown"
             apy = float(val["thirty_day_apy"]) * 100  # Convert to percentage
-            hotkey = val["hotkey"]["ss58"][:10]  # First 10 chars
+            hotkey = val["hotkey"][:10]  # First 10 chars (plain ss58 string since the /v1 API)
             print(f"{i}. {name} ({hotkey}...) - {apy:.2f}%")
     else:
         print("No validators found or API error")
